@@ -3,12 +3,18 @@ package com.hcapps.biometricsexample
 import android.animation.Animator
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.biometric.BiometricPrompt
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import com.hcapps.biometricsexample.databinding.ActivityAuthenticationBinding
 
 class AuthenticationActivity: FragmentActivity() {
+
+    companion object {
+        const val TAG = "AuthenticationAcitvity"
+    }
 
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var binding: ActivityAuthenticationBinding
@@ -35,6 +41,17 @@ class AuthenticationActivity: FragmentActivity() {
     private val biometricCallback = object: BiometricPrompt.AuthenticationCallback() {
 
         override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+            Log.d(TAG, "onAuthenticationError: $errorCode, $errString")
+
+            if (errorCode == BiometricPrompt.ERROR_NO_BIOMETRICS) {
+                Toast.makeText(this@AuthenticationActivity, "No Biometrics Enrolled or there is issue with sensor", Toast.LENGTH_SHORT).show()
+                Intent(this@AuthenticationActivity, MainActivity::class.java).also {
+                    startActivity(it)
+                    finish()
+                    return
+                }
+            }
+
             binding.tvStatus.isVisible = true
             binding.tvStatus.text = getString(R.string.fingerprint_cancelled)
             binding.animationView.setAnimation(R.raw.fingerprint_failed)
