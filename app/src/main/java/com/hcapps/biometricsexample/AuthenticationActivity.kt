@@ -3,9 +3,8 @@ package com.hcapps.biometricsexample
 import android.animation.Animator
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.biometric.BiometricPrompt
-import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import com.hcapps.biometricsexample.databinding.ActivityAuthenticationBinding
 
@@ -36,18 +35,23 @@ class AuthenticationActivity: FragmentActivity() {
     private val biometricCallback = object: BiometricPrompt.AuthenticationCallback() {
 
         override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-            binding.animationView.setAnimation(R.raw.wrong_fingerprint)
+            binding.tvStatus.isVisible = true
+            binding.tvStatus.text = getString(R.string.fingerprint_cancelled)
+            binding.animationView.setAnimation(R.raw.fingerprint_failed)
             binding.animationView.playAnimation()
         }
 
         override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+            binding.tvStatus.isVisible = false
             binding.animationView.setAnimation(R.raw.fingerprint_success)
             binding.animationView.playAnimation()
             binding.animationView.addAnimatorListener(lottieSuccessAnimationListener)
         }
 
         override fun onAuthenticationFailed() {
-            binding.animationView.setAnimation(R.raw.wrong_fingerprint)
+            binding.tvStatus.isVisible = true
+            binding.tvStatus.text = getString(R.string.fingerprint_error)
+            binding.animationView.setAnimation(R.raw.fingerprint_failed)
             binding.animationView.playAnimation()
         }
     }
