@@ -1,6 +1,8 @@
 package com.hcapps.biometricsexample
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -8,7 +10,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val btnLock = findViewById<Button>(R.id.btn_lock)
+        val intent = Intent(this, AuthenticationActivity::class.java)
 
+        btnLock.setOnClickListener {
+            startActivity(intent)
+        }
 
     }
 }

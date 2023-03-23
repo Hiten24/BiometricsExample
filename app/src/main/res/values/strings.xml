@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">BiometricsExample</string>
+    <string name="biometric_prompt_title">Verify your identify</string>
+    <string name="biometric_prompt_description">Use fingerprint to verify your identity.</string>
+    <string name="cancel">Cancel</string>
 </resources>
